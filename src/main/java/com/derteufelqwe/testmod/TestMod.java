@@ -1,6 +1,7 @@
 package com.derteufelqwe.testmod;
 
 import com.derteufelqwe.testmod.Blocks.TestBlock;
+import com.derteufelqwe.testmod.Guis.GuiHandler;
 import com.derteufelqwe.testmod.Utils.BlocksCreator;
 import com.derteufelqwe.testmod.Utils.RegistryHandler;
 import com.derteufelqwe.testmod.proxy.CommonProxy;
@@ -12,8 +13,8 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import org.lwjgl.Sys;
 
 
 @Mod(modid = TestMod.MODID, version = TestMod.VERSION)
@@ -24,6 +25,9 @@ public class TestMod {
 
     @SidedProxy(clientSide = "com.derteufelqwe.testmod.proxy.ClientProxy", serverSide = "com.derteufelqwe.testmod.proxy.CommonProxy")
     public static CommonProxy proxy;
+
+    @Mod.Instance
+    public static TestMod instance;
 
 
     @Mod.EventHandler
@@ -39,6 +43,7 @@ public class TestMod {
         GameRegistry.addSmelting(Blocks.COAL_BLOCK, new ItemStack(Items.DIAMOND, 1), 100);
         GameRegistry.addSmelting(Items.APPLE, new ItemStack(Items.GOLDEN_APPLE, 1), 1000);
 
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         System.out.println("---------Mod initialization finished.");
     }
 

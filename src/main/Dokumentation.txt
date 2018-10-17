@@ -1,1 +1,168 @@
 Registrierung:
+
+
+Entity:
+    add Motion to Entity:
+        - entity.motionX
+
+
+GUI:
+    General:
+        - Create a Class extending GUI Screen
+        - Run in Debug Mode to be able to change Positions while running
+        Buttons:
+            - the Super in drawGui is for drawing all buttons.
+            - it can be replaced with button1.drawButton(mc, mousex, mouseY);
+            - For buttons there is a updateButtons method handy as the buttons dont update when their properties change
+
+        Custom Buttons:
+            - Create a new class extending GuiButton
+            - create constructor with (buttonId, x, y, buttonText)
+            - super(buttonId, x, y, width, height, buttonText)
+            - you can add a parrent to the constructor to get access to the vars of the calling obj
+            drawButton:
+                - Create what you want the button to look like
+                - check if the mouse is over the button to change the look when hovering
+
+        TextField:
+            - create instance of GuiTextField
+            - textField1 = new GuiTextField(0, fontRenderer, 0, 0, 100, 20);
+            - draw it in init
+            keyTyped:
+                - add this to keyTyped
+                - textField1.textboxKeyTyped(typedChar, keyCode);
+            mouseClicked:
+                - add this to mouseClicked
+                - textField1.mouseClicked(mouseX, mouseY, mouseButton);
+
+
+        drawScreen:
+            - Draws all the Content
+            - drawing a texture and drawing a string both load a texture so they need to be unbound
+            useful inherited variables:
+                - width, height
+            draw a texture (ResourceLocation):
+                - Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+                - This loads the Texture to some kind of brush to paint it
+                - drawTextureModalRect(guiX, guiY, textureX, textureY, width, height);
+            set Background a little gray:
+                - drawDefaultBackground
+            draw a String:
+                - drawString(fontRenderer, "Text", posX, posY, 0x000000);
+                - drawCenteredString(args)
+            draw String without shadow:
+                - drawString uses fontRenderer.drawStringWithShadow
+                - fontRenderer.drawString(params)
+            drawing using OpenGL (GlStateManager glsm):
+                - always put code in GlStateManager.PushMatrix() and GlStateManager.PopMatrix()
+                - draw Transparent:
+                    - Glsm.enableAlpha() and glsm.enableBlend();
+
+        initGui:
+            - Called when Window Size changes or gets opened first
+            draw a standard Minecraft Button:
+                - create an instance of GuiButton and maybe an ID for it
+                - buttonList.clear();
+                - buttonList.add(button1 = new GuiButton(id, x, y, width, height, text))
+
+        actionPerformed:
+            - Called when clicking a button
+            get Button click:
+                - switch through button.id
+
+        keyTyped:
+            - registering which key got pressed
+
+    Open the Gui:
+        - Check if Worldin.isRemote is false
+        - Minecraft.getMinecraft().displayGuiScreen(new GuiClass())
+
+    Texture:
+        - Texture has to be 256 * 256 and can contain multiple Parts
+        load Textures:
+            - ResourceLocation texture = new ResourceLocation(TestMod.MODID, "textures/gui/book.png");
+
+    What you might want to do:
+        draw an Item in the Inventory:
+            - itemRender.renderItemAndEffectIntoGUI(new ItemStack(Blocks.PUMPKIN), centerX, centerY);
+            change the size
+                - glsm.scale(2,2,2)
+                - scaling also scaled the coords
+                - so glsm.translate
+
+    Methods to remember:
+        - drawHoveringText
+
+    Localize Text:
+        - use I18n.frormat("key")
+        - can also be ("key", par1, par2, par3)
+        - then add %1$s to the lang file
+
+
+Containers / TileEntities:
+    - When you open a chest the client opens a gui and the server opens a container managing all the items
+    Requirements:
+        - Block implementing ITileEntityProvider
+        - TileEntity extending TileEntity
+        - Container extending Container
+        - Gui extending GuiContainer
+        - GuiHandler implementing IGuiHandler
+    - the block must implement ITileEntityProvider
+    - override createNewTileEntity, breakBlock (what to do when you destroy the block)
+    - create a new class extending TileEntity
+    createNewTileEntity:
+        - return instance of Tile Entity Class
+
+    In the TileEntity Class:
+        - create a new ItemStackHandler (ISH) with the number of slots as Parameter
+        - override read / writeFromNBT and has / getCapabilities
+        readFromNBT:
+            - reading the NBT to the ISH
+            - ISH.deserializeNBT(compound.getCompoundTag("name"));
+        writeToNBT:
+            - compound.setTag("name", ISH.serializeNBT());
+        hasCapability:
+            - add this to the beginning of the super line
+            - capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
+        getCapability:
+            - add this to the beginning of the super line
+            - capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T)ISH :
+
+    - create new Class extending Container
+    In the Container Class:
+        - override canInteractWith, transferStackInSlot
+        - transferStackInSlot is for shift clicking items to the inventory
+        ------ Enter Description
+
+    In the Gui Class:
+        - implement drawGuiContainerForegroundLayer and drawGuiContainerBackgroundLayer
+        drawGuiContainerForegroundLayer:
+            - Draw the foreground like Text
+        drawGuiContainerBackgroundLayer:
+            - Draw the Background texture
+
+    In the GuiHandler class:
+        - Handles what is done by the player and by the server
+        registering:
+            - NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+            - instance is an instance of the mod itself
+        - Implement getServerGuiElement and getClientGuiElement
+        - create ids for different Guis
+        both:
+            - get TileEntity on the BlockPos of the methods coords and convert it to your tile entity (yourte) abc
+            - switch through the ID and check for all of your ids
+        getServerGuiElement:
+            - return new TestContainer(player.inventory, (TestTileEntity) te);
+        getClientGuiElement:
+            - return new GuiContainer(player.inventory, (TestTileEntity) te);
+
+    In Block class:
+        Open the gui:
+            - check if (TestTileEntity) worldIn.getTileEntity(pos); is not null and if it has the capabilities
+            - te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)
+            - playerIn.openGui(TestMod.instance, GuiHandler.GUI_TUTORIAL_CONTAINER_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        breakBlock:
+            - Spawn all Itemstacks on the ground
+            - EntityItem item = new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, inventory.getStackInSlot(i));
+              worldIn.spawnEntity(item);
+
