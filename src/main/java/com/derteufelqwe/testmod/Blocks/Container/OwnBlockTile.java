@@ -1,8 +1,10 @@
-package com.derteufelqwe.testmod.tiles;
+package com.derteufelqwe.testmod.Blocks.Container;
 
+import net.minecraft.block.BlockPumpkin;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemCoal;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -11,19 +13,23 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class TestTileEntity extends TileEntity {
+public class OwnBlockTile extends TileEntity {
 
-    ItemStackHandler inventory = new ItemStackHandler(9);
+    ItemStackHandler inv = new ItemStackHandler(4);
+    private final String name = "inventory";
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        inventory.deserializeNBT(compound.getCompoundTag("inventory"));
+        inv.deserializeNBT(compound.getCompoundTag(name));
+        System.out.println("Reading from NBT");
     }
+
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setTag("inventory", inventory.serializeNBT());
+        compound.setTag(name, inv.serializeNBT());
+        System.out.println("Writing to NBT");
         return super.writeToNBT(compound);
     }
 
@@ -35,7 +41,7 @@ public class TestTileEntity extends TileEntity {
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T)inventory : super.getCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T)inv : super.getCapability(capability, facing);
     }
 
 

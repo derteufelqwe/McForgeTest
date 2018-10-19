@@ -1,42 +1,40 @@
-package com.derteufelqwe.testmod.container;
+package com.derteufelqwe.testmod.Blocks.Container;
 
-import com.derteufelqwe.testmod.tiles.TestTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import org.lwjgl.Sys;
 
+public class OwnBlockContainer extends Container {
 
-public class TestContainer extends Container {
+    public OwnBlockContainer(InventoryPlayer playerInv, OwnBlockTile tile) {
+        if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
+            IItemHandler inv = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
 
-    public TestContainer(InventoryPlayer inventoryPlayer, TestTileEntity testTileEntity) {
-        if(testTileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
-            IItemHandler inventory = testTileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
+            // GUI
+            addSlotToContainer(new SlotItemHandler(inv, 0, 25, 58));
+            addSlotToContainer(new SlotItemHandler(inv, 1, 79, 58));
+            addSlotToContainer(new SlotItemHandler(inv, 2, 134, 58));
+            addSlotToContainer(new SlotItemHandler(inv, 3, 79, 18));
 
-            // Actual Container
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    addSlotToContainer(new SlotItemHandler(inventory, j + (i * 3), 62 + (j * 18), 17 + (i * 18)));
-                }
-            }
-
-            // Player Inventory
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 9; j++) {
-                    addSlotToContainer(new Slot(inventoryPlayer, 9 + j + (i * 9), 8 + (j * 18), 84 + i * 18));
+            // Inventory
+            for (int y = 0; y < 3; y++) {
+                for (int x = 0; x < 9; x++) {
+                    addSlotToContainer(new Slot(playerInv, 9 + (y * 9) + x, 8 + (x * 18), 87 + (y * 18)));
                 }
             }
 
             // Hotbar
-            for (int i = 0; i < 9; i++) {
-                addSlotToContainer(new Slot(inventoryPlayer, i, 8 + (i * 18), 142));
+            for (int x = 0; x < 9; x++) {
+                addSlotToContainer(new Slot(playerInv, x, 8 + (x * 18), 145));
             }
 
         }
@@ -77,5 +75,4 @@ public class TestContainer extends Container {
     public boolean canInteractWith(EntityPlayer playerIn) {
         return true;
     }
-
 }

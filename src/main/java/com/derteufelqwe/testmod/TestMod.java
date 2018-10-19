@@ -1,10 +1,12 @@
 package com.derteufelqwe.testmod;
 
+import com.derteufelqwe.testmod.Blocks.Container.OwnBlockTile;
 import com.derteufelqwe.testmod.Blocks.TestBlock;
 import com.derteufelqwe.testmod.Guis.GuiHandler;
 import com.derteufelqwe.testmod.Utils.BlocksCreator;
 import com.derteufelqwe.testmod.Utils.RegistryHandler;
 import com.derteufelqwe.testmod.proxy.CommonProxy;
+import com.derteufelqwe.testmod.tiles.TestTileEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -44,6 +46,8 @@ public class TestMod {
         GameRegistry.addSmelting(Items.APPLE, new ItemStack(Items.GOLDEN_APPLE, 1), 1000);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+        GameRegistry.registerTileEntity(TestTileEntity.class, TestMod.MODID + "containertest");
+        GameRegistry.registerTileEntity(OwnBlockTile.class, TestMod.MODID + "ownblock");
         System.out.println("---------Mod initialization finished.");
     }
 

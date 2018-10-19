@@ -70,4 +70,5 @@ public class ContainerBlock extends Block  implements ITileEntityProvider {
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TestTileEntity();
     }
+
 }

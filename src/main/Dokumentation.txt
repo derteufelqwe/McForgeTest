@@ -10,6 +10,7 @@ GUI:
     General:
         - Create a Class extending GUI Screen
         - Run in Debug Mode to be able to change Positions while running
+
         Buttons:
             - the Super in drawGui is for drawing all buttons.
             - it can be replaced with button1.drawButton(mc, mousex, mouseY);
@@ -101,21 +102,24 @@ GUI:
 
 Containers / TileEntities:
     - When you open a chest the client opens a gui and the server opens a container managing all the items
+    -
     Requirements:
         - Block implementing ITileEntityProvider
         - TileEntity extending TileEntity
         - Container extending Container
         - Gui extending GuiContainer
         - GuiHandler implementing IGuiHandler
-    - the block must implement ITileEntityProvider
     - override createNewTileEntity, breakBlock (what to do when you destroy the block)
-    - create a new class extending TileEntity
-    createNewTileEntity:
-        - return instance of Tile Entity Class
+
+    In the Block class
+        createNewTileEntity:
+            - return instance of Tile Entity Class
 
     In the TileEntity Class:
         - create a new ItemStackHandler (ISH) with the number of slots as Parameter
         - override read / writeFromNBT and has / getCapabilities
+        registering the TileEntity:
+            - GameRegistry.registerTileEntity(TestTileEntity.class, MODID + nameForRegistry);
         readFromNBT:
             - reading the NBT to the ISH
             - ISH.deserializeNBT(compound.getCompoundTag("name"));
@@ -128,14 +132,25 @@ Containers / TileEntities:
             - add this to the beginning of the super line
             - capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T)ISH :
 
-    - create new Class extending Container
     In the Container Class:
         - override canInteractWith, transferStackInSlot
+        - transferStackInSlot can be copied if you want to be able to shift click
         - transferStackInSlot is for shift clicking items to the inventory
-        ------ Enter Description
+        Constructor:
+            - takes the player inv as InventoryPlayer and your TileEntity class
+            - check is the capability is there
+            - get the tiles inv as IItemHandler with te.getCapability(args)
+            - then, in for loops, draw the slots of the player inv with
+              addSlotToContainer(new Slot(inventoryPlayer, index, x, y));
+            - for the new Gui add with
+              addSlotToContainer(new SlotItemHandler(inventoryPlayer, index, x, y));
+            - The Indexes of gui and inv don't need to be unique
 
     In the Gui Class:
-        - implement drawGuiContainerForegroundLayer and drawGuiContainerBackgroundLayer
+        - implement Constructor, drawGuiContainerForegroundLayer and drawGuiContainerBackgroundLayer
+        Constructor:
+            - same signature as the Container Class
+            - just super a new instance of your Container Class
         drawGuiContainerForegroundLayer:
             - Draw the foreground like Text
         drawGuiContainerBackgroundLayer:

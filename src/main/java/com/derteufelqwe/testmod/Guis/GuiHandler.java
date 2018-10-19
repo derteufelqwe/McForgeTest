@@ -1,5 +1,8 @@
 package com.derteufelqwe.testmod.Guis;
 
+import com.derteufelqwe.testmod.Blocks.Container.OwnBlockContainer;
+import com.derteufelqwe.testmod.Blocks.Container.OwnBlockGuiContainer;
+import com.derteufelqwe.testmod.Blocks.Container.OwnBlockTile;
 import com.derteufelqwe.testmod.container.TestContainer;
 import com.derteufelqwe.testmod.tiles.TestTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +16,7 @@ import javax.annotation.Nullable;
 public class GuiHandler implements IGuiHandler {
 
     public static final int GUI_TUTORIAL_CONTAINER_ID = 0;
+    public static final int GUI_OWNBLOCK_ID = 1;
 
     @Nullable
     @Override
@@ -23,6 +27,8 @@ public class GuiHandler implements IGuiHandler {
         switch (ID) {
             case GUI_TUTORIAL_CONTAINER_ID:
                 return new TestContainer(player.inventory, (TestTileEntity) te);
+            case GUI_OWNBLOCK_ID:
+                return new OwnBlockContainer(player.inventory, (OwnBlockTile) te);
             default: return null;
         }
     }
@@ -35,7 +41,9 @@ public class GuiHandler implements IGuiHandler {
 
         switch (ID) {
             case GUI_TUTORIAL_CONTAINER_ID:
-                return new GuiContainer(player.inventory, (TestTileEntity) te);
+                return new TestGuiContainer(player.inventory, (TestTileEntity) te);
+            case GUI_OWNBLOCK_ID:
+                return new OwnBlockGuiContainer(player.inventory, (OwnBlockTile) te);
             default: return null;
         }
     }
