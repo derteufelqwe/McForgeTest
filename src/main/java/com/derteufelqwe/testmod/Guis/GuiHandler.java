@@ -3,6 +3,7 @@ package com.derteufelqwe.testmod.Guis;
 import com.derteufelqwe.testmod.Blocks.Container.OwnBlockContainer;
 import com.derteufelqwe.testmod.Blocks.Container.OwnBlockGuiContainer;
 import com.derteufelqwe.testmod.Blocks.Container.OwnBlockTile;
+import com.derteufelqwe.testmod.TestMod;
 import com.derteufelqwe.testmod.container.TestContainer;
 import com.derteufelqwe.testmod.tiles.TestTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +24,10 @@ public class GuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
         TileEntity te = world.getTileEntity(pos);
+        if (te == null) {
+            TestMod.logger.info("Trying to open gui of null on the Server.");
+            return null;
+        }
 
         switch (ID) {
             case GUI_TUTORIAL_CONTAINER_ID:
@@ -38,6 +43,10 @@ public class GuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
         TileEntity te = world.getTileEntity(pos);
+        if (te == null) {
+            TestMod.logger.info("Trying to open gui of null on the Client.");
+            return null;
+        }
 
         switch (ID) {
             case GUI_TUTORIAL_CONTAINER_ID:

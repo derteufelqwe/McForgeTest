@@ -7,16 +7,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class OwnBlockTile extends TileEntity {
+public class OwnBlockTile extends TileEntity implements ITickable {
 
     ItemStackHandler inv = new ItemStackHandler(4);
-    private final String name = "inventory";
+    private final String name = "ownBlockInv";
+
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -44,5 +46,11 @@ public class OwnBlockTile extends TileEntity {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T)inv : super.getCapability(capability, facing);
     }
 
+    // Stuff for the Working Tile Entity
 
+
+    @Override
+    public void update() {
+
+    }
 }

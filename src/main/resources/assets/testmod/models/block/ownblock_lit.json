@@ -1,0 +1,12 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "particle": "testmod:blocks/ownblock_sides",
+    "up": "testmod:blocks/ownblock_sides",
+    "down": "testmod:blocks/ownblock_sides",
+    "north": "testmod:blocks/ownblock_front_lit",
+    "east": "testmod:blocks/ownblock_sides",
+    "south": "testmod:blocks/ownblock_sides",
+    "west": "testmod:blocks/ownblock_sides"
+  }
+}

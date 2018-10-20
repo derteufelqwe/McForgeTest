@@ -47,8 +47,8 @@ public class RegistryHandler {
     // Registering all Models
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        for(Block block : BLOCKS) {
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Item.getItemFromBlock(block).getRegistryName(), "inventory"));
+        for(Item block : ITEMS) {
+            ModelLoader.setCustomModelResourceLocation(block, 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
         }
 
         System.out.println("Finished registering Models.");

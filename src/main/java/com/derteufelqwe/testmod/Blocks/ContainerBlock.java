@@ -30,7 +30,7 @@ public class ContainerBlock extends Block  implements ITileEntityProvider {
 
     public ContainerBlock() {
         super(Material.ROCK);
-        setCreativeTab(CreativeTabs.FOOD);
+        setCreativeTab(TestMod.tutorialTab);
         setRegistryName("containerblock");
         setUnlocalizedName("containerblock");
         setHardness(1f);

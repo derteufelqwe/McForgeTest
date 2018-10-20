@@ -21,7 +21,7 @@ public class TestBlock extends Block {
 
     public TestBlock() {
         super(Material.ROCK);
-        setCreativeTab(CreativeTabs.FOOD);
+        setCreativeTab(TestMod.tutorialTab);
         setUnlocalizedName("testblock");
         setRegistryName("testblock");
         setHardness(3f);

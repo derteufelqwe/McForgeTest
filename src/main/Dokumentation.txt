@@ -1,6 +1,16 @@
 Registrierung:
 
 
+Creative Tabs:
+    - create a class extending CreativeTabs
+    - register by creating an instance in main as public static final
+    - when using a custom background save texure under textures/gui/container/creative_inventory
+
+
+Crafting:
+    - create folder in assets.yourmod named recipes
+
+
 Entity:
     add Motion to Entity:
         - entity.motionX
@@ -109,7 +119,7 @@ Containers / TileEntities:
         - Container extending Container
         - Gui extending GuiContainer
         - GuiHandler implementing IGuiHandler
-    - override createNewTileEntity, breakBlock (what to do when you destroy the block)
+    - override createNewTileEntity, breakBlock (maybe drop the items)
 
     In the Block class
         createNewTileEntity:
@@ -119,6 +129,7 @@ Containers / TileEntities:
         - create a new ItemStackHandler (ISH) with the number of slots as Parameter
         - override read / writeFromNBT and has / getCapabilities
         registering the TileEntity:
+            - register in init
             - GameRegistry.registerTileEntity(TestTileEntity.class, MODID + nameForRegistry);
         readFromNBT:
             - reading the NBT to the ISH
@@ -181,3 +192,15 @@ Containers / TileEntities:
             - EntityItem item = new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, inventory.getStackInSlot(i));
               worldIn.spawnEntity(item);
 
+
+Working TileEntity (Furnace)
+    Requirements:
+        - A working container
+
+    Block Class:
+        Add propertys as variables
+            - PropertyDirection FACING = BlockHorizontal.FACING;
+            - PropertyBool BURNING = PropertyBool.create("burning");
+        set default Block properties
+            - In the constructor add the properties to the default property
+            - setDefaultState(this.getDefaultState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, false));

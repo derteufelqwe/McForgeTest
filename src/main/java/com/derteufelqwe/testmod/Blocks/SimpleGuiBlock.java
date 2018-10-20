@@ -19,7 +19,7 @@ public class SimpleGuiBlock extends Block {
 
     public SimpleGuiBlock() {
         super(Material.ROCK);
-        setCreativeTab(CreativeTabs.FOOD);
+        setCreativeTab(TestMod.tutorialTab);
         setUnlocalizedName("simpleguiblock");
         setRegistryName("simpleguiblock");
         setHardness(1f);

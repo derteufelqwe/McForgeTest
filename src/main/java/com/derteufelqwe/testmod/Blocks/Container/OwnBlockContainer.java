@@ -3,6 +3,7 @@ package com.derteufelqwe.testmod.Blocks.Container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
@@ -15,9 +16,13 @@ import org.lwjgl.Sys;
 
 public class OwnBlockContainer extends Container {
 
+    private OwnBlockTile ownBlockTile = null;
+
     public OwnBlockContainer(InventoryPlayer playerInv, OwnBlockTile tile) {
         if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
             IItemHandler inv = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
+
+            ownBlockTile = tile;
 
             // GUI
             addSlotToContainer(new SlotItemHandler(inv, 0, 25, 58));

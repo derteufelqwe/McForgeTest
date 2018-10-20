@@ -6,7 +6,9 @@ import com.derteufelqwe.testmod.Guis.GuiHandler;
 import com.derteufelqwe.testmod.Utils.BlocksCreator;
 import com.derteufelqwe.testmod.Utils.RegistryHandler;
 import com.derteufelqwe.testmod.proxy.CommonProxy;
+import com.derteufelqwe.testmod.tabs.TestTab;
 import com.derteufelqwe.testmod.tiles.TestTileEntity;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -17,6 +19,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 @Mod(modid = TestMod.MODID, version = TestMod.VERSION)
@@ -31,6 +35,11 @@ public class TestMod {
     @Mod.Instance
     public static TestMod instance;
 
+    // Logger
+    public static Logger logger = LogManager.getLogger(MODID);
+
+    // Creative Tab
+    public static final CreativeTabs tutorialTab = new TestTab();
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {

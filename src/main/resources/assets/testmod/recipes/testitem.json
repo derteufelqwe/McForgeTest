@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "gig",
+    "gig",
+    " l "
+  ],
+
+  "key": {
+    "i": {
+      "item": "minecraft:gold_ingot"
+    },
+    "g": {
+      "item": "minecraft:glass"
+    },
+    "l": {
+      "item": "minecraft:leather"
+    }
+  },
+
+  "result": {
+    "item": "testmod:testitem",
+    "count": 1
+  }
+
+}
