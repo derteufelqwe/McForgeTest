@@ -2,10 +2,12 @@ package com.derteufelqwe.testmod.Blocks.Container;
 
 import net.minecraft.block.BlockPumpkin;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemCoal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
@@ -25,6 +27,10 @@ public class OwnBlockTile extends TileEntity implements ITickable {
     public int maxCooktime = 100;
     public int currentCooktime = 80;
 
+
+    public void decrStackSize(int index, int count) {
+        this.inv.getStackInSlot(index).setCount(this.inv.getStackInSlot(index).getCount() - count);
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -64,12 +70,7 @@ public class OwnBlockTile extends TileEntity implements ITickable {
 
     @Override
     public void update() {
-
-        if (currentCooktime < 100) {
-            currentCooktime++;
-        } else {
-            currentCooktime = 0;
-        }
-
+        ItemStack res = OwnBlockRecipes.getInstance().getRecipeResult(this.inv.getStackInSlot(0), this.inv.getStackInSlot(2));
+        System.out.println("Result: " + res + " = " + res.getItem());
     }
 }
