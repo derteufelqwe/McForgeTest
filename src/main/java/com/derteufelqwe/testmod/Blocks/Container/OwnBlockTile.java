@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -19,11 +20,20 @@ public class OwnBlockTile extends TileEntity implements ITickable {
     ItemStackHandler inv = new ItemStackHandler(4);
     private final String name = "ownBlockInv";
 
+    public int burnTime = 0;
+    public int currentBurnTime = 0;
+    public int maxCooktime = 100;
+    public int currentCooktime = 80;
+
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         inv.deserializeNBT(compound.getCompoundTag(name));
+        this.currentCooktime = compound.getInteger("burnTime");
+        this.currentBurnTime = compound.getInteger("currentBurnTime");
+        this.currentCooktime = compound.getInteger("maxCookTime");
+        this.currentCooktime = compound.getInteger("currentCookTime");
         System.out.println("Reading from NBT");
     }
 
@@ -31,6 +41,10 @@ public class OwnBlockTile extends TileEntity implements ITickable {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setTag(name, inv.serializeNBT());
+        compound.setInteger("burnTime", burnTime);
+        compound.setInteger("currentBurnTime", currentBurnTime);
+        compound.setInteger("maxCookTime", maxCooktime);
+        compound.setInteger("currentCookTime", currentCooktime);
         System.out.println("Writing to NBT");
         return super.writeToNBT(compound);
     }
@@ -48,9 +62,14 @@ public class OwnBlockTile extends TileEntity implements ITickable {
 
     // Stuff for the Working Tile Entity
 
-
     @Override
     public void update() {
+
+        if (currentCooktime < 100) {
+            currentCooktime++;
+        } else {
+            currentCooktime = 0;
+        }
 
     }
 }
